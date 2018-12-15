@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!--<security:global-method-security secured-annotations="enabled"/>-->
+    <security:http pattern="/**/*.jpg" security="none" />
+    <security:http pattern="/**/*.png" security="none" />
+    <security:http pattern="/**/*.gif" security="none" />
+    <security:http pattern="/**/*.css" security="none" />
+    <security:http pattern="/**/*.js" security="none" />
+    <security:http pattern="/user/register" security="none" />
+    <security:http pattern="/user/login" security="none" />
+    <security:http pattern="/user/sessionTimeOut" security="none" />
+    <security:http auto-config="true" use-expressions="false" authentication-manager-ref="myAuthenticationManager">
+        <!--login-page为登录页面跳转url，login-processing-url为登录页面中登录表单提交的url-->
+        <!--username-parameter为登录页面中登录表单中用户名字段名，password-parameter为登录页面中登录表单中密码字段名-->
+        <security:form-login
+                login-page="/user/login" login-processing-url="/user/dologin"
+                username-parameter="userName" password-parameter="passWord"
+                authentication-success-handler-ref="loginSuccessHandler"
+                authentication-failure-handler-ref="loginFailureHandler" />
+        <security:logout delete-cookies="JSESSIONID"/>
+        <security:csrf disabled="true"/>
+        <security:intercept-url pattern="/home" access="ROLE_PAGE_HOME"/>
+        <security:intercept-url pattern="/user/show" access="ROLE_PAGE_HOME" />
+    </security:http>
+
+    <!--加载自定义的UserDetailsService-->
+    <security:authentication-manager alias="myAuthenticationManager">
+        <security:authentication-provider user-service-ref="userDetailsService"/>
+    </security:authentication-manager>
+    <bean id="userDetailsService" class="cn.AssassinG.ScsyERP.WebBoss.security.MyUserDetailService"/>
+    <!--登录成功处理类-->
+    <bean id="loginSuccessHandler" class="cn.AssassinG.ScsyERP.WebBoss.security.LoginSuccessHandler"/>
+    <bean id="loginFailureHandler" class="cn.AssassinG.ScsyERP.WebBoss.security.LoginFailureHandler"/>
+
+    <!--自定义权限前缀-->
+    <!--<bean Id="myAccessDecisionManager" class="cn.AssassinG.scsycc.common.security.MyAffirmativeBased">-->
+        <!--<constructor-arg name="decisionVoters">-->
+            <!--<list>-->
+                <!--&lt;!&ndash;<bean class="org.springframework.security.web.access.expression.WebExpressionVoter"/>&ndash;&gt;-->
+                <!--<bean class="cn.AssassinG.scsycc.common.security.MyRoleVoter"/>-->
+                <!--<bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>-->
+            <!--</list>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean Id="myMethodSecurityInterceptor" class="org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor">-->
+        <!--<property name="authenticationManager" ref="myAuthenticationManager"/>-->
+        <!--<property name="accessDecisionManager" ref="myAccessDecisionManager"/>-->
+        <!--<property name="securityMetadataSource">-->
+            <!--<bean class="org.springframework.security.access.annotation.SecuredAnnotationSecurityMetadataSource"/>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--<bean Id="roleVoter" class="org.springframework.security.access.method.MethodSecurityMetadataSource.springframework.security.access.vote.RoleVoter">-->
+        <!--<property name="rolePrefix" value="RES_"/>-->
+    <!--</bean>-->
+
+    <!--自定义支持Ehcache的UserDetailsService-->
+    <!--<bean Id="cachingUserDetailsService" class="org.springframework.security.config.authentication.CachingUserDetailsService">-->
+    <!--<constructor-arg ref="userDetailsService"/>-->
+    <!--<property name="userCache" ref="userCache"/>-->
+    <!--</bean>-->
+    <!--<bean Id="userCache" class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">-->
+    <!--<property name="cache" ref="ehcache4UserDetails"/>-->
+    <!--</bean>-->
+    <!--<bean Id="ehcache4UserDetails" class="org.springframework.cache.ehcache.EhCacheFactoryBean"/>-->
+</beans>

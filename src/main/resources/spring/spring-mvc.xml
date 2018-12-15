@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--自动扫描-->
+    <context:component-scan base-package="cn.AssassinG.ScsyERP.WebBoss"/>
+    <!--<context:component-scan base-package="cn.AssassinG.ScsyERP.User.facade.service"/>-->
+
+    <!--spring security start-->
+    <security:global-method-security jsr250-annotations="enabled"/>
+    <!--spring security end-->
+
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:annotation-driven conversion-service="conversionService">
+        <mvc:message-converters register-defaults="false">
+            <!--避免AJAX请求时返回JSON出现下载文件-->
+            <bean id = "mappingJacksonHttpMessageConverter"
+                  class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>text/json;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    
+    <!--<mvc:cors>-->
+        <!--<mvc:mapping path="/**"-->
+        <!--allowed-origins="http://127.0.0.1:2333"-->
+        <!--allowed-methods="*"-->
+        <!--allow-credentials="true"-->
+        <!--max-age="3600"/>-->
+    <!--</mvc:cors>-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="cn.AssassinG.ScsyERP.WebBoss.Intercepts.HttpRequestIntercepter"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.AdminDeptConverter" />
+                <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.GovernmentDeptConverter" />
+                <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.PacketTypeConverter" />
+                <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.ProductStatusConverter" />
+                <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.UserTypeConverter" />
+                <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.BooleanConverter" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="spring.messages.messages" />
+        <property name="useCodeAsDefaultMessage" value="true" />
+    </bean>
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/html/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="maxUploadSize" value="10485760000"/>
+        <property name="maxInMemorySize" value="40960"/>
+    </bean>
+</beans>
