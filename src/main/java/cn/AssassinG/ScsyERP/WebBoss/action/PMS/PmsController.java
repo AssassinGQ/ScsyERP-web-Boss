@@ -2,6 +2,8 @@ package cn.AssassinG.ScsyERP.WebBoss.action.PMS;
 
 import cn.AssassinG.ScsyERP.User.facade.entity.Permission;
 import cn.AssassinG.ScsyERP.User.facade.entity.Role;
+import cn.AssassinG.ScsyERP.User.facade.service.PermissionServiceFacade;
+import cn.AssassinG.ScsyERP.User.facade.service.RoleServiceFacade;
 import cn.AssassinG.ScsyERP.User.facade.service.UserServiceFacade;
 import cn.AssassinG.ScsyERP.WebBoss.base.BaseController;
 import cn.AssassinG.ScsyERP.WebBoss.enums.RetStatusType;
@@ -27,6 +29,10 @@ public class PmsController extends BaseController<Role> {
     private static final long serialVersionUID = 2143900832034488834L;
     @Autowired
     private UserServiceFacade userServiceFacade;
+    @Autowired
+    private RoleServiceFacade roleServiceFacade;
+    @Autowired
+    private PermissionServiceFacade permissionServiceFacade;
 
     @Override
     protected BaseService<Role> getService() {
@@ -64,7 +70,7 @@ public class PmsController extends BaseController<Role> {
     @ResponseBody
     public JSONObject addRolePermission(Long role, Long permission){
         try{
-            userServiceFacade.addRolePermission(role, permission);
+            roleServiceFacade.addRolePermission(role, permission);
             return getResultJSON(RetStatusType.StatusSuccess, "用户名修改成功", null);
         }catch(DaoException | BizException e){
             return getResultJSON(e.getMessage());
@@ -75,7 +81,7 @@ public class PmsController extends BaseController<Role> {
     @ResponseBody
     public JSONObject removeRolePermission(Long role, Long permission){
         try{
-            userServiceFacade.removeRolePermission(role, permission);
+            roleServiceFacade.removeRolePermission(role, permission);
             return getResultJSON(RetStatusType.StatusSuccess, "用户名修改成功", null);
         }catch(DaoException | BizException e){
             return getResultJSON(e.getMessage());
@@ -110,25 +116,31 @@ public class PmsController extends BaseController<Role> {
     *   用户这边是点选，角色用勾选，勾中父角色自动勾中相应子角色
     */
 
-    @RequestMapping(value="/getAllRolesInherit", method = RequestMethod.GET)
+    @RequestMapping(value="/getRolesInherit", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject getAllRolesInherit(){
-        List<Role> roles = userServiceFacade.findAllRoles();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 1);
-        jsonObject.put("msg", "请求成功");
-        JSONArray jsonArray = new JSONArray();
-        for(int i = 0; i < roles.size(); i++){
-            JSONObject item = new JSONObject();
-            Role role = roles.get(i);
-            String father_name = role.getSuperRoleName();
-            Role father_role = father_name == null ? null : userServiceFacade.findRoleByRoleName(role.getSuperRoleName());
-            item.put("Id", role.getId());
-            item.put("pid", father_role == null ? 0 : father_role.getId());
-            item.put("roledesc", role.getRoleDesc());
-            jsonArray.add(item);
+    public JSONObject getRolesInherit(){
+        Role root_role = roleServiceFacade.findRoleByRoleName("superadmin");
+        JSONArray dataArray = new JSONArray();
+        if (root_role != null && !root_role.getIfDeleted()) {
+            dataArray.add(buildChild(root_role));
         }
-        jsonObject.put("data", jsonArray);
+        JSONObject contentObject = new JSONObject();
+        contentObject.put("TotalCount", 1);
+        contentObject.put("data", dataArray);
+        return getResultJSON(RetStatusType.StatusSuccess, "查询成功", contentObject);
+    }
+
+    private JSONObject buildChild(Role role){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("resourceId", role.getRoleName());
+        jsonObject.put("resourceName", role.getRoleDesc());
+        List<Role> children = roleServiceFacade.findChildrenRoles(role.getRoleName());
+        JSONArray jsonArray = new JSONArray();
+        for(int i = 0; i < children.size(); i++){
+            if(children.get(i) != null)
+                jsonArray.add(buildChild(children.get(i)));
+        }
+        jsonObject.put("children", jsonArray);
         return jsonObject;
     }
 
@@ -145,7 +157,7 @@ public class PmsController extends BaseController<Role> {
             JSONObject item = new JSONObject();
             Role role = iterator.next();
             String father_name = role.getSuperRoleName();
-            Role father_role = father_name == null ? null : userServiceFacade.findRoleByRoleName(role.getSuperRoleName());
+            Role father_role = father_name == null ? null : roleServiceFacade.findRoleByRoleName(role.getSuperRoleName());
             item.put("Id", role.getId());
             item.put("pid", father_role == null ? 0 : father_role.getId());
             item.put("roledesc", role.getRoleDesc());
@@ -164,7 +176,7 @@ public class PmsController extends BaseController<Role> {
     @RequestMapping(value="/getAllPermissions", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject getAllPermissions(){
-        List<Permission> permissions = userServiceFacade.findAllPermission();
+        List<Permission> permissions = permissionServiceFacade.findAllPermission();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", 1);
         jsonObject.put("msg", "请求成功");
@@ -197,7 +209,7 @@ public class PmsController extends BaseController<Role> {
             jsonObject.put("data", null);
             return jsonObject;
         }
-        Set<Permission> permissions = userServiceFacade.findRolePermissions(roleid);
+        Set<Permission> permissions = roleServiceFacade.findRolePermissions(roleid);
         JSONArray jsonArray = new JSONArray();
         for(Permission permission : permissions){
             JSONObject item = new JSONObject();
