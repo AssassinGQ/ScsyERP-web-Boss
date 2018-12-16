@@ -10,6 +10,7 @@ import cn.AssassinG.ScsyERP.common.core.service.BaseService;
 import cn.AssassinG.ScsyERP.common.exceptions.BizException;
 import cn.AssassinG.ScsyERP.common.exceptions.DaoException;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +134,48 @@ public class UserController extends BaseController<User> {
     @ResponseBody
     public JSONObject getById(Long entityId){
         return super.getByIdImpl(entityId);
+    }
+
+    @RequestMapping(value = "/findByUserName", method = RequestMethod.GET)//查询信息
+    @ResponseBody
+    public JSONObject findByUserName(String userName){
+        try{
+            JSONObject contentObject = new JSONObject();
+            JSONArray dataArray = new JSONArray();
+            User user = userServiceFacade.findUserByUname(userName);
+            JSONObject itemObject = (JSONObject)JSON.toJSON(user);
+            dataArray.add(itemObject);
+            contentObject.put("data", dataArray);
+            return getResultJSON(RetStatusType.StatusSuccess, "查询"+getClassDesc()+"信息成功", contentObject);
+        }catch (DaoException | BizException e){
+            return getResultJSON(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/findByPhone", method = RequestMethod.GET)//查询信息
+    @ResponseBody
+    public JSONObject findByPhone(String phone){
+        try{
+            JSONObject contentObject = new JSONObject();
+            JSONArray dataArray = new JSONArray();
+            User user = userServiceFacade.findUserByPhone(phone);
+            JSONObject itemObject = (JSONObject)JSON.toJSON(user);
+            dataArray.add(itemObject);
+            contentObject.put("data", dataArray);
+            return getResultJSON(RetStatusType.StatusSuccess, "查询"+getClassDesc()+"信息成功", contentObject);
+        }catch (DaoException | BizException e){
+            return getResultJSON(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/findAllUser", method = RequestMethod.GET)//查询信息
+    @ResponseBody
+    public JSONObject findAllUser(){
+        try{
+            return getResultJSON("查询"+getClassDesc()+"信息成功", userServiceFacade.findAllUser());
+        }catch (DaoException | BizException e){
+            return getResultJSON(e.getMessage());
+        }
     }
 
     /**
