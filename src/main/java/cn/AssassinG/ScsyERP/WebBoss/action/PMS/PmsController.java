@@ -110,6 +110,28 @@ public class PmsController extends BaseController<Role> {
         }
     }
 
+    @RequestMapping(value = "/addRole", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject addRole(Role role){
+        try{
+            roleServiceFacade.create(role);
+            return getResultJSON(RetStatusType.StatusSuccess, "添加角色成功", null);
+        }catch(DaoException | BizException e){
+            return getResultJSON(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/removeRole", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject removeRole(Long role){
+        try{
+            roleServiceFacade.deleteById(role);
+            return getResultJSON(RetStatusType.StatusSuccess, "删除角色成功", null);
+        }catch(DaoException | BizException e){
+            return getResultJSON(e.getMessage());
+        }
+    }
+
     @RequestMapping(value="/getAllRoles", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject getAllRoles(){
@@ -118,8 +140,9 @@ public class PmsController extends BaseController<Role> {
         for(int i = 0; i < roles.size(); i++){
             JSONObject item = new JSONObject();
             Role role = roles.get(i);
-            item.put("roleId", role.getId());
+            item.put("id", role.getId());
             item.put("name", role.getRoleName());
+            item.put("corporation", role.getCorporation());
             item.put("desc", role.getRoleDesc());
             dataArray.add(item);
         }
@@ -216,7 +239,7 @@ public class PmsController extends BaseController<Role> {
         for(int i = 0; i < permissions.size(); i++){
             JSONObject item = new JSONObject();
             Permission permission = permissions.get(i);
-            item.put("permissionId", permission.getId());
+            item.put("id", permission.getId());
             item.put("name", permission.getPermissionName());
             item.put("desc", permission.getPermissionDesc());
             dataArray.add(item);
