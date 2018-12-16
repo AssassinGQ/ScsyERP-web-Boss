@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Iterator;
@@ -134,15 +133,18 @@ public class PmsController extends BaseController<Role> {
         List<Role> children = roleServiceFacade.findChildrenRoles(role.getRoleName());
         if(children.size() == 0){
             JSONObject myselfObject = new JSONObject();
+            myselfObject.put("id", role.getId());
             myselfObject.put("resourceId", role.getRoleName());
             myselfObject.put("resourceName", role.getRoleDesc());
             myselfObject.put("children", new JSONArray());
             return myselfObject;
         }else{
             JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", "group-"+role.getId());
             jsonObject.put("resourceId", "group-"+role.getRoleName());
             jsonObject.put("resourceName", role.getRoleDesc()+"组");
             JSONObject myselfObject = new JSONObject();
+            myselfObject.put("id", role.getId());
             myselfObject.put("resourceId", role.getRoleName());
             myselfObject.put("resourceName", role.getRoleDesc());
             myselfObject.put("children", new JSONArray());
@@ -213,11 +215,11 @@ public class PmsController extends BaseController<Role> {
 
     @RequestMapping(value="/getRolePermission", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject getRolePermission(@RequestParam("roleid") Long roleid){
-        if(roleid == null){
+    public JSONObject getRolePermission(Long role){
+        if(role == null){
             return getResultJSON("请上传角色主键");
         }
-        Set<Permission> permissions = roleServiceFacade.findRolePermissions(roleid);
+        Set<Permission> permissions = roleServiceFacade.findRolePermissions(role);
         JSONArray jsonArray = new JSONArray();
         for(Permission permission : permissions){
             JSONObject item = new JSONObject();
