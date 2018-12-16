@@ -2,6 +2,7 @@ package cn.AssassinG.ScsyERP.WebBoss.action.PMS;
 
 import cn.AssassinG.ScsyERP.User.facade.entity.Permission;
 import cn.AssassinG.ScsyERP.User.facade.entity.Role;
+import cn.AssassinG.ScsyERP.User.facade.entity.User_Permission;
 import cn.AssassinG.ScsyERP.User.facade.service.PermissionServiceFacade;
 import cn.AssassinG.ScsyERP.User.facade.service.RoleServiceFacade;
 import cn.AssassinG.ScsyERP.User.facade.service.UserServiceFacade;
@@ -243,8 +244,53 @@ public class PmsController extends BaseController<Role> {
         JSONArray jsonArray = new JSONArray();
         for(Permission permission : permissions){
             JSONObject item = new JSONObject();
-            item.put("id", permission.getPermissionName());
-            item.put("name", permission.getPermissionDesc());
+            item.put("id", permission.getId());
+            item.put("name", permission.getPermissionName());
+            item.put("desc", permission.getPermissionDesc());
+            jsonArray.add(item);
+        }
+        JSONObject contentObject = new JSONObject();
+        contentObject.put("data", jsonArray);
+        contentObject.put("TotalCount", permissions.size());
+        return getResultJSON(RetStatusType.StatusSuccess, "查询成功", contentObject);
+    }
+
+    //额外屏蔽权限表
+    @RequestMapping(value="/getUserPermission", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getUserPermission(Long user){
+        if(user == null){
+            return getResultJSON("请上传用户主键");
+        }
+        List<User_Permission> userPermissions = userServiceFacade.findUserPermissions(user);
+        JSONArray jsonArray = new JSONArray();
+        for(User_Permission user_permission : userPermissions){
+            JSONObject item = new JSONObject();
+            item.put("userId", user_permission.getUserId());
+            item.put("permissionId", user_permission.getPermissionId());
+            item.put("type", user_permission.getType().getValue());
+            jsonArray.add(item);
+        }
+        JSONObject contentObject = new JSONObject();
+        contentObject.put("data", jsonArray);
+        contentObject.put("TotalCount", userPermissions.size());
+        return getResultJSON(RetStatusType.StatusSuccess, "查询成功", contentObject);
+    }
+
+    //最终权限
+    @RequestMapping(value="/getUserFinalPermission", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getUserFinalPermission(Long user){
+        if(user == null){
+            return getResultJSON("请上传用户主键");
+        }
+        Set<Permission> permissions = userServiceFacade.findUserFinalPermissions(user);
+        JSONArray jsonArray = new JSONArray();
+        for(Permission permission : permissions){
+            JSONObject item = new JSONObject();
+            item.put("id", permission.getId());
+            item.put("name", permission.getPermissionName());
+            item.put("desc", permission.getPermissionDesc());
             jsonArray.add(item);
         }
         JSONObject contentObject = new JSONObject();

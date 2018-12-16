@@ -23,7 +23,7 @@ public class MyUserDetailService implements UserDetailsService {
         User user = userService.findUserByUname(s);
         if(user == null)
             throw new UsernameNotFoundException("");
-        Set<Permission> permissions = userService.findUserPermissions(user.getId());
+        Set<Permission> permissions = userService.findUserFinalPermissions(user.getId());
         List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
         for(Permission permission : permissions){
             logger.info(permission);
