@@ -109,6 +109,25 @@ public class PmsController extends BaseController<Role> {
         }
     }
 
+    @RequestMapping(value="/getAllRoles", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getAllRoles(){
+        List<Role> roles = roleServiceFacade.findAllRoles();
+        JSONArray dataArray = new JSONArray();
+        for(int i = 0; i < roles.size(); i++){
+            JSONObject item = new JSONObject();
+            Role role = roles.get(i);
+            item.put("id", role.getId());
+            item.put("name", role.getRoleName());
+            item.put("desc", role.getRoleDesc());
+            dataArray.add(item);
+        }
+        JSONObject contentObject = new JSONObject();
+        contentObject.put("data", dataArray);
+        contentObject.put("TotalCount", roles.size());
+        return getResultJSON(RetStatusType.StatusSuccess, "查询成功", contentObject);
+    }
+
     /*  User-Role 配置页面
     *   查询所有可见用户
     *   查询层次化角色，getAllRolesInherit
@@ -202,7 +221,7 @@ public class PmsController extends BaseController<Role> {
         }
         JSONObject contentObject = new JSONObject();
         contentObject.put("data", dataArray);
-        contentObject.put("TotalCount", 1);
+        contentObject.put("TotalCount", permissions.size());
         return getResultJSON(RetStatusType.StatusSuccess, "查询成功", contentObject);
     }
 
