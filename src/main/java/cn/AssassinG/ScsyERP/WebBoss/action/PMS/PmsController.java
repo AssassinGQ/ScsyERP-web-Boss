@@ -163,23 +163,23 @@ public class PmsController extends BaseController<Role> {
     @ResponseBody
     public JSONObject getUserRoles(Long user){
         Set<Role> roles = userServiceFacade.findUserRoles(user);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 1);
-        jsonObject.put("msg", "请求成功");
+        JSONObject contentObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         Iterator<Role> iterator = roles.iterator();
         while(iterator.hasNext()){
             JSONObject item = new JSONObject();
             Role role = iterator.next();
-            String father_name = role.getSuperRoleName();
-            Role father_role = father_name == null ? null : roleServiceFacade.findRoleByRoleName(role.getSuperRoleName());
-            item.put("Id", role.getId());
-            item.put("pid", father_role == null ? 0 : father_role.getId());
-            item.put("roledesc", role.getRoleDesc());
+//            String father_name = role.getSuperRoleName();
+//            Role father_role = father_name == null ? null : roleServiceFacade.findRoleByRoleName(role.getSuperRoleName());
+            item.put("id", role.getId());
+//            item.put("pid", father_role == null ? 0 : father_role.getId());
+            item.put("name", role.getRoleName());
+            item.put("desc", role.getRoleDesc());
             jsonArray.add(item);
         }
-        jsonObject.put("data", jsonArray);
-        return jsonObject;
+        contentObject.put("data", jsonArray);
+        contentObject.put("TotalCount", roles.size());
+        return getResultJSON(RetStatusType.StatusSuccess, "查询成功", contentObject);
     }
 
     /*
