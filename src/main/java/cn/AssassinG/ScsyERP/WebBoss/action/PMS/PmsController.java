@@ -190,19 +190,18 @@ public class PmsController extends BaseController<Role> {
     @ResponseBody
     public JSONObject getAllPermissions(){
         List<Permission> permissions = permissionServiceFacade.findAllPermission();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", 1);
-        jsonObject.put("msg", "请求成功");
+        JSONObject contentObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for(int i = 0; i < permissions.size(); i++){
             JSONObject item = new JSONObject();
             Permission permission = permissions.get(i);
-            item.put("permissionid", permission.getId());
-            item.put("permissiondesc", permission.getPermissionDesc());
+            item.put("resourceId", permission.getPermissionName());
+            item.put("resourceName", permission.getPermissionDesc());
             jsonArray.add(item);
         }
-        jsonObject.put("data", jsonArray);
-        return jsonObject;
+        contentObject.put("data", jsonArray);
+        contentObject.put("TotalCount", permissions.size());
+        return getResultJSON(RetStatusType.StatusSuccess, "查询成功", contentObject);
     }
 
     /*
