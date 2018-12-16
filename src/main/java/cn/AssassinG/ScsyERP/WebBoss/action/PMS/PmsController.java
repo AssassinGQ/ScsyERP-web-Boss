@@ -49,7 +49,7 @@ public class PmsController extends BaseController<Role> {
     public JSONObject addUserRole(Long user, Long role){
         try{
             userServiceFacade.addUserRole(user, role);
-            return getResultJSON(RetStatusType.StatusSuccess, "用户名修改成功", null);
+            return getResultJSON(RetStatusType.StatusSuccess, "用户角色添加成功", null);
         }catch(DaoException | BizException e){
             return getResultJSON(e.getMessage());
         }
@@ -60,7 +60,7 @@ public class PmsController extends BaseController<Role> {
     public JSONObject removeUserRole(Long user, Long role){
         try{
             userServiceFacade.removeUserRole(user, role);
-            return getResultJSON(RetStatusType.StatusSuccess, "用户名修改成功", null);
+            return getResultJSON(RetStatusType.StatusSuccess, "用户角色移除成功", null);
         }catch(DaoException | BizException e){
             return getResultJSON(e.getMessage());
         }
@@ -71,7 +71,7 @@ public class PmsController extends BaseController<Role> {
     public JSONObject addRolePermission(Long role, Long permission){
         try{
             roleServiceFacade.addRolePermission(role, permission);
-            return getResultJSON(RetStatusType.StatusSuccess, "用户名修改成功", null);
+            return getResultJSON(RetStatusType.StatusSuccess, "角色权限添加成功", null);
         }catch(DaoException | BizException e){
             return getResultJSON(e.getMessage());
         }
@@ -82,7 +82,7 @@ public class PmsController extends BaseController<Role> {
     public JSONObject removeRolePermission(Long role, Long permission){
         try{
             roleServiceFacade.removeRolePermission(role, permission);
-            return getResultJSON(RetStatusType.StatusSuccess, "用户名修改成功", null);
+            return getResultJSON(RetStatusType.StatusSuccess, "角色权限移除成功", null);
         }catch(DaoException | BizException e){
             return getResultJSON(e.getMessage());
         }
@@ -90,10 +90,10 @@ public class PmsController extends BaseController<Role> {
 
     @RequestMapping(value = "/addUserPermission", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject addUserPermission(Long user, Long permission){
+    public JSONObject addUserPermission(Long user, Long permission, Integer type){
         try{
-            userServiceFacade.addUserPermission(user, permission);
-            return getResultJSON(RetStatusType.StatusSuccess, "用户名修改成功", null);
+            userServiceFacade.addUserPermission(user, permission, type);
+            return getResultJSON(RetStatusType.StatusSuccess, "用户权限添加成功", null);
         }catch(DaoException | BizException e){
             return getResultJSON(e.getMessage());
         }
@@ -101,10 +101,10 @@ public class PmsController extends BaseController<Role> {
 
     @RequestMapping(value = "/removeUserPermission", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject removeUserPermission(Long user, Long permission){
+    public JSONObject removeUserPermission(Long user, Long permission, Integer type){
         try{
-            userServiceFacade.removeUserPermission(user, permission);
-            return getResultJSON(RetStatusType.StatusSuccess, "用户名修改成功", null);
+            userServiceFacade.removeUserPermission(user, permission, type);
+            return getResultJSON(RetStatusType.StatusSuccess, "用户权限移除成功", null);
         }catch(DaoException | BizException e){
             return getResultJSON(e.getMessage());
         }
