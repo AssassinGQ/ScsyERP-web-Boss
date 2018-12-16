@@ -44,7 +44,7 @@ public class PmsController extends BaseController<Role> {
         return "角色";
     }
 
-    @RequestMapping(value = "/addUserRole", method = RequestMethod.GET)
+    @RequestMapping(value = "/addUserRole", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject addUserRole(Long user, Long role){
         try{
@@ -55,7 +55,7 @@ public class PmsController extends BaseController<Role> {
         }
     }
 
-    @RequestMapping(value = "/removeUserRole", method = RequestMethod.GET)
+    @RequestMapping(value = "/removeUserRole", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject removeUserRole(Long user, Long role){
         try{
@@ -66,7 +66,7 @@ public class PmsController extends BaseController<Role> {
         }
     }
 
-    @RequestMapping(value = "/addRolePermission", method = RequestMethod.GET)
+    @RequestMapping(value = "/addRolePermission", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject addRolePermission(Long role, Long permission){
         try{
@@ -77,7 +77,7 @@ public class PmsController extends BaseController<Role> {
         }
     }
 
-    @RequestMapping(value = "/removeRolePermission", method = RequestMethod.GET)
+    @RequestMapping(value = "/removeRolePermission", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject removeRolePermission(Long role, Long permission){
         try{
@@ -88,7 +88,7 @@ public class PmsController extends BaseController<Role> {
         }
     }
 
-    @RequestMapping(value = "/addUserPermission", method = RequestMethod.GET)
+    @RequestMapping(value = "/addUserPermission", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject addUserPermission(Long user, Long permission){
         try{
@@ -99,7 +99,7 @@ public class PmsController extends BaseController<Role> {
         }
     }
 
-    @RequestMapping(value = "/removeUserPermission", method = RequestMethod.GET)
+    @RequestMapping(value = "/removeUserPermission", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject removeUserPermission(Long user, Long permission){
         try{
@@ -118,7 +118,7 @@ public class PmsController extends BaseController<Role> {
         for(int i = 0; i < roles.size(); i++){
             JSONObject item = new JSONObject();
             Role role = roles.get(i);
-            item.put("id", role.getId());
+            item.put("roleId", role.getId());
             item.put("name", role.getRoleName());
             item.put("desc", role.getRoleDesc());
             dataArray.add(item);
@@ -216,7 +216,7 @@ public class PmsController extends BaseController<Role> {
         for(int i = 0; i < permissions.size(); i++){
             JSONObject item = new JSONObject();
             Permission permission = permissions.get(i);
-            item.put("id", permission.getId());
+            item.put("permissionId", permission.getId());
             item.put("name", permission.getPermissionName());
             item.put("desc", permission.getPermissionDesc());
             dataArray.add(item);
