@@ -190,21 +190,14 @@ public class PmsController extends BaseController<Role> {
     @ResponseBody
     public JSONObject getAllPermissions(){
         List<Permission> permissions = permissionServiceFacade.findAllPermission();
-        JSONArray jsonArray = new JSONArray();
+        JSONArray dataArray = new JSONArray();
         for(int i = 0; i < permissions.size(); i++){
             JSONObject item = new JSONObject();
             Permission permission = permissions.get(i);
-            item.put("resourceId", permission.getPermissionName());
-            item.put("resourceName", permission.getPermissionDesc());
-            item.put("children", new JSONArray());
-            jsonArray.add(item);
+            item.put("id", permission.getPermissionName());
+            item.put("name", permission.getPermissionDesc());
+            dataArray.add(item);
         }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("resourceId", "permissions");
-        jsonObject.put("resourceName", "权限");
-        jsonObject.put("children", jsonArray);
-        JSONArray dataArray = new JSONArray();
-        dataArray.add(jsonObject);
         JSONObject contentObject = new JSONObject();
         contentObject.put("data", dataArray);
         contentObject.put("TotalCount", 1);
