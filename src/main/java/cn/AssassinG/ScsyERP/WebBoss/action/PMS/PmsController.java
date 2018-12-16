@@ -131,22 +131,30 @@ public class PmsController extends BaseController<Role> {
     }
 
     private JSONObject buildChild(Role role){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("resourceId", "group-"+role.getRoleName());
-        jsonObject.put("resourceName", role.getRoleDesc()+"组");
-        JSONObject myselfObject = new JSONObject();
-        myselfObject.put("resourceId", role.getRoleName());
-        myselfObject.put("resourceName", role.getRoleDesc());
-        myselfObject.put("children", new JSONArray());
         List<Role> children = roleServiceFacade.findChildrenRoles(role.getRoleName());
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.add(myselfObject);
-        for(int i = 0; i < children.size(); i++){
-            if(children.get(i) != null)
-                jsonArray.add(buildChild(children.get(i)));
+        if(children.size() == 0){
+            JSONObject myselfObject = new JSONObject();
+            myselfObject.put("resourceId", role.getRoleName());
+            myselfObject.put("resourceName", role.getRoleDesc());
+            myselfObject.put("children", new JSONArray());
+            return myselfObject;
+        }else{
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("resourceId", "group-"+role.getRoleName());
+            jsonObject.put("resourceName", role.getRoleDesc()+"组");
+            JSONObject myselfObject = new JSONObject();
+            myselfObject.put("resourceId", role.getRoleName());
+            myselfObject.put("resourceName", role.getRoleDesc());
+            myselfObject.put("children", new JSONArray());
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(myselfObject);
+            for(int i = 0; i < children.size(); i++){
+                if(children.get(i) != null)
+                    jsonArray.add(buildChild(children.get(i)));
+            }
+            jsonObject.put("children", jsonArray);
+            return jsonObject;
         }
-        jsonObject.put("children", jsonArray);
-        return jsonObject;
     }
 
     @RequestMapping(value="/getUserRoles", method = RequestMethod.GET)
