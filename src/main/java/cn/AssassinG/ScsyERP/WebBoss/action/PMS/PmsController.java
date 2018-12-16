@@ -214,25 +214,21 @@ public class PmsController extends BaseController<Role> {
     @RequestMapping(value="/getRolePermission", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject getRolePermission(@RequestParam("roleid") Long roleid){
-        JSONObject jsonObject = new JSONObject();
         if(roleid == null){
-            jsonObject.put("status", 0);
-            jsonObject.put("msg", "请上传角色ID");
-            jsonObject.put("data", null);
-            return jsonObject;
+            return getResultJSON("请上传角色主键");
         }
         Set<Permission> permissions = roleServiceFacade.findRolePermissions(roleid);
         JSONArray jsonArray = new JSONArray();
         for(Permission permission : permissions){
             JSONObject item = new JSONObject();
-            item.put("permissionid", permission.getId());
-            item.put("permissiondesc", permission.getPermissionDesc());
+            item.put("id", permission.getPermissionName());
+            item.put("name", permission.getPermissionDesc());
             jsonArray.add(item);
         }
-        jsonObject.put("status", 1);
-        jsonObject.put("msg", "请求成功");
-        jsonObject.put("data", jsonArray);
-        return jsonObject;
+        JSONObject contentObject = new JSONObject();
+        contentObject.put("data", jsonArray);
+        contentObject.put("TotalCount", permissions.size());
+        return getResultJSON(RetStatusType.StatusSuccess, "查询成功", contentObject);
     }
 
 //    @RequestMapping(value="/getFatherRolePermission", method = RequestMethod.GET)
