@@ -215,8 +215,9 @@ public class PmsController extends BaseController<Role> {
         for(int i = 0; i < permissions.size(); i++){
             JSONObject item = new JSONObject();
             Permission permission = permissions.get(i);
-            item.put("id", permission.getPermissionName());
-            item.put("name", permission.getPermissionDesc());
+            item.put("id", permission.getId());
+            item.put("name", permission.getPermissionName());
+            item.put("desc", permission.getPermissionDesc());
             dataArray.add(item);
         }
         JSONObject contentObject = new JSONObject();
