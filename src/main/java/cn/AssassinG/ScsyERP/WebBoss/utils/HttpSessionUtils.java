@@ -43,12 +43,19 @@ public class HttpSessionUtils {
     }
 
     //创建cookie，并将新cookie添加到“响应对象”response中。
-    public static void addCookie(HttpServletResponse response){
+    public static void addCookie(HttpServletRequest request, HttpServletResponse response){
         System.out.println("set cookie");
+        String origin = request.getHeader("Origin");
+        if(origin == null) {
+            String referer = request.getHeader("Referer");
+            if(referer != null) {
+                origin = referer.substring(0, referer.indexOf("/", 7));
+            }
+        }
         Cookie cookie = new Cookie("name_test","value_test");//创建新cookie
         cookie.setMaxAge(5 * 60);// 设置存在时间为5分钟
         cookie.setPath("/");//设置作用域
-//        cookie.setDomain("http://localhost:2333");
+        cookie.setDomain(origin);
         response.addCookie(cookie);//将cookie添加到response的cookie数组中返回给客户端
 //        Collection<String> headerNames = response.getHeaderNames();
 //        Iterator<String> iterator = headerNames.iterator();
