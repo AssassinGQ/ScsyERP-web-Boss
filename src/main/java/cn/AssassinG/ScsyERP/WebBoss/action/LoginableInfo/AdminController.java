@@ -68,17 +68,20 @@ public class AdminController extends LoginableBaseController<Admin> {
                         System.out.println("username : " + userDetails.getUsername());
                     else
                         System.out.println("user detail null");
-                }
-                if(object instanceof  Principal){
+                }else if(object instanceof  Principal){
                     Principal principal = (Principal) object;
                     if(principal != null)
                         System.out.println("name : " + principal.getName());
                     else
                         System.out.println("principal null");
+                }else if(object == null){
+                    System.out.println("object null");
+                }else{
+                    System.out.println("not a userdetail or principal");
                 }
-                System.out.println("not a userdetail or principal");
             }
         }catch(Exception e){
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
         return super.createImpl(admin, user);
