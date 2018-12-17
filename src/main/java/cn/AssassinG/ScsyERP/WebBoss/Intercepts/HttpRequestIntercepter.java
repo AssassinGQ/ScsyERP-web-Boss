@@ -37,22 +37,22 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
 
             showCookies(request);
 
-            if(!response.containsHeader(originHeader)) {
-                String origin = request.getHeader("Origin");
-                if(origin == null) {
-                    String referer = request.getHeader("Referer");
-                    if(referer != null) {
-                        origin = referer.substring(0, referer.indexOf("/", 7));
-                    }
-                }
-                response.setHeader("Access-Control-Allow-Origin", origin);
-            }
-            response.setContentType("application/json;charset=utf-8");
+//            if(!response.containsHeader(originHeader)) {
+//                String origin = request.getHeader("Origin");
+//                if(origin == null) {
+//                    String referer = request.getHeader("Referer");
+//                    if(referer != null) {
+//                        origin = referer.substring(0, referer.indexOf("/", 7));
+//                    }
+//                }
+//                response.setHeader("Access-Control-Allow-Origin", origin);
+//            }
+//            response.setContentType("application/json;charset=utf-8");
 //            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Access-Control-Allow-Credentials", "true");
-            response.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS");
-            response.setHeader("Access-Control-Allow-Headers", "Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Origin");
-            response.setHeader("Access-Control-Max-Age", "3600");
+//            response.setHeader("Access-Control-Allow-Credentials", "true");
+//            response.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS");
+//            response.setHeader("Access-Control-Allow-Headers", "Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Origin");
+//            response.setHeader("Access-Control-Max-Age", "3600");
             return true;
         }
         /**
@@ -103,6 +103,7 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
         Cookie cookie = new Cookie("name_test","value_test");//创建新cookie
         cookie.setMaxAge(5 * 60);// 设置存在时间为5分钟
         cookie.setPath("/");//设置作用域
+        cookie.setDomain("http://localhost:2333");
         response.addCookie(cookie);//将cookie添加到response的cookie数组中返回给客户端
         Collection<String> headerNames = response.getHeaderNames();
         Iterator<String> iterator = headerNames.iterator();
