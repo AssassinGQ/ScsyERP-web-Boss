@@ -76,6 +76,7 @@ public class AdminController extends LoginableBaseController<Admin> {
                     else
                         System.out.println("principal null");
                 }
+                System.out.println("not a userdetail or principal");
             }
         }catch(Exception e){
             e.printStackTrace();
