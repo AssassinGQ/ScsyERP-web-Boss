@@ -7,9 +7,9 @@ public class BooleanConverter implements Converter<String, Boolean> {
     public Boolean convert(String s) {
         if(s == null || s.isEmpty())
             return null;
-        else if(s.equals("true"))
+        else if(s.equals("true") || s.equals("0"))
             return true;
-        else if(s.equals("false"))
+        else if(s.equals("false") || s.equals("1"))
             return false;
         else
             return null;
