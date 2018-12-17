@@ -8,6 +8,7 @@ import cn.AssassinG.ScsyERP.WebBoss.Intercepts.HttpRequestIntercepter;
 import cn.AssassinG.ScsyERP.WebBoss.base.BaseController;
 import cn.AssassinG.ScsyERP.WebBoss.enums.RetStatusType;
 import cn.AssassinG.ScsyERP.common.core.service.BaseService;
+import cn.AssassinG.ScsyERP.common.enums.AccountStatus;
 import cn.AssassinG.ScsyERP.common.exceptions.BizException;
 import cn.AssassinG.ScsyERP.common.exceptions.DaoException;
 import com.alibaba.fastjson.JSON;
@@ -43,7 +44,13 @@ public class InStorageFormController extends BaseController<InStorageForm> {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)//创建信息
     @ResponseBody
-    public JSONObject create(InStorageForm inStorageForm){
+    public JSONObject create(InStorageForm inStorageForm, String accountStatus){
+        AccountStatus accountStatus_real = null;
+        try{
+            Integer accountStatusInt = Integer.parseInt(accountStatus);
+            accountStatus_real = AccountStatus.getEnum(accountStatusInt);
+        }catch(Exception e){}
+        inStorageForm.setAccountStatus(accountStatus_real);
         return super.createImpl(inStorageForm);
     }
 
