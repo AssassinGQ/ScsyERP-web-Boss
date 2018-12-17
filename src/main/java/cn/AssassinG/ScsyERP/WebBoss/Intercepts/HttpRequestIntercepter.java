@@ -6,9 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class HttpRequestIntercepter implements HandlerInterceptor {
 
@@ -106,5 +104,12 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
         cookie.setMaxAge(5 * 60);// 设置存在时间为5分钟
         cookie.setPath("/");//设置作用域
         response.addCookie(cookie);//将cookie添加到response的cookie数组中返回给客户端
+        Collection<String> headerNames = response.getHeaderNames();
+        Iterator<String> iterator = headerNames.iterator();
+        System.out.println("In addCookie, check:");
+        while(iterator.hasNext()){
+            String headerName = iterator.next();
+            System.out.println(response.getHeader(headerName));
+        }
     }
 }
