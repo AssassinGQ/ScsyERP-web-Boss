@@ -11,7 +11,7 @@ public class HttpSessionUtils {
     public static final String credentialsHeader = "Access-Control-Allow-Credentials";
     public static final String maxAgeHeader = "Access-Control-Max-Age";
     public static void setCORS(HttpServletRequest request, HttpServletResponse response){
-        if(true){
+        if(false){
             response.setContentType("application/json;charset=utf-8");
             if(!response.containsHeader(originHeader)) {
                 String origin = request.getHeader("Origin");

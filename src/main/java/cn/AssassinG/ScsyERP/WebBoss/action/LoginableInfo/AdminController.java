@@ -16,12 +16,17 @@ import cn.AssassinG.ScsyERP.common.page.PageParam;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,36 +54,36 @@ public class AdminController extends LoginableBaseController<Admin> {
     @RequestMapping(value = "/create", method = RequestMethod.POST)//创建信息
     @ResponseBody
     public JSONObject create(Admin admin, User user){
-//        try{
-//            SecurityContext sctx = SecurityContextHolder.getContext();
-//            Authentication auth = sctx.getAuthentication();
-//            if(auth == null){
-//                System.out.println("Authentication null");
-//            }else{
-////                Object object = auth.getDetails();
-//                Object object = auth.getPrincipal();
-//                if(object instanceof UserDetails){
-//                    UserDetails userDetails = (UserDetails)object;
-//                    if(userDetails != null)
-//                        System.out.println("username : " + userDetails.getUsername());
-//                    else
-//                        System.out.println("user detail null");
-//                }else if(object instanceof  Principal){
-//                    Principal principal = (Principal) object;
-//                    if(principal != null)
-//                        System.out.println("name : " + principal.getName());
-//                    else
-//                        System.out.println("principal null");
-//                }else if(object == null){
-//                    System.out.println("object null");
-//                }else{
-//                    System.out.println("not a userdetail or principal");
-//                }
-//            }
-//        }catch(Exception e){
-//            System.out.println(e.getMessage());
-//            e.printStackTrace();
-//        }
+        try{
+            SecurityContext sctx = SecurityContextHolder.getContext();
+            Authentication auth = sctx.getAuthentication();
+            if(auth == null){
+                System.out.println("Authentication null");
+            }else{
+//                Object object = auth.getDetails();
+                Object object = auth.getPrincipal();
+                if(object instanceof UserDetails){
+                    UserDetails userDetails = (UserDetails)object;
+                    if(userDetails != null)
+                        System.out.println("username : " + userDetails.getUsername());
+                    else
+                        System.out.println("user detail null");
+                }else if(object instanceof Principal){
+                    Principal principal = (Principal) object;
+                    if(principal != null)
+                        System.out.println("name : " + principal.getName());
+                    else
+                        System.out.println("principal null");
+                }else if(object == null){
+                    System.out.println("object null");
+                }else{
+                    System.out.println("not a userdetail or principal");
+                }
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
         return super.createImpl(admin, user);
     }
 
