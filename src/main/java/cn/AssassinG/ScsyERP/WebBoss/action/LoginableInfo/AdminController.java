@@ -58,18 +58,24 @@ public class AdminController extends LoginableBaseController<Admin> {
             SecurityContext sctx = SecurityContextHolder.getContext();
             Authentication auth = sctx.getAuthentication();
             if(auth == null){
-                System.out.println("Authencation null");
+                System.out.println("Authentication null");
             }else{
-                UserDetails userDetails = (UserDetails) auth.getDetails();
-                Principal principal = (Principal) auth.getPrincipal();
-                if(userDetails != null)
-                    System.out.println("username : " + userDetails.getUsername());
-                else
-                    System.out.println("user detail null");
-                if(principal != null)
-                    System.out.println("name : " + principal.getName());
-                else
-                    System.out.println("principal null");
+//                Object object = auth.getDetails();
+                Object object = auth.getPrincipal();
+                if(object instanceof UserDetails){
+                    UserDetails userDetails = (UserDetails)object;
+                    if(userDetails != null)
+                        System.out.println("username : " + userDetails.getUsername());
+                    else
+                        System.out.println("user detail null");
+                }
+                if(object instanceof  Principal){
+                    Principal principal = (Principal) object;
+                    if(principal != null)
+                        System.out.println("name : " + principal.getName());
+                    else
+                        System.out.println("principal null");
+                }
             }
         }catch(Exception e){
             e.printStackTrace();

@@ -87,7 +87,7 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
         }
 
     //读取cookie数组，之后迭代出各个cookie
-    public void showCookies(HttpServletRequest request){
+    public static void showCookies(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();//根据请求数据，找到cookie数组
 
         if (null==cookies) {//如果没有cookie数组
@@ -101,6 +101,7 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
 
     //创建cookie，并将新cookie添加到“响应对象”response中。
     public static void addCookie(HttpServletResponse response){
+        System.out.println("set cookie");
         Cookie cookie = new Cookie("name_test","value_test");//创建新cookie
         cookie.setMaxAge(5 * 60);// 设置存在时间为5分钟
         cookie.setPath("/");//设置作用域
