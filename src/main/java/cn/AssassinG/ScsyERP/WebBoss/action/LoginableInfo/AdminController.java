@@ -16,12 +16,17 @@ import cn.AssassinG.ScsyERP.common.page.PageParam;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +54,18 @@ public class AdminController extends LoginableBaseController<Admin> {
     @RequestMapping(value = "/create", method = RequestMethod.POST)//创建信息
     @ResponseBody
     public JSONObject create(Admin admin, User user){
+        SecurityContext sctx = SecurityContextHolder.getContext();
+        Authentication auth = sctx.getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getDetails();
+        Principal principal = (Principal) auth.getPrincipal();
+        if(userDetails != null)
+            System.out.println("username : " + userDetails.getUsername());
+        else
+            System.out.println("user detail null");
+        if(principal != null)
+            System.out.println("name : " + principal.getName());
+        else
+            System.out.println("principal null");
         return super.createImpl(admin, user);
     }
 
