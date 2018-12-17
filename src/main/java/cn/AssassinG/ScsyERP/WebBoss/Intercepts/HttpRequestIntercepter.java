@@ -1,19 +1,19 @@
 package cn.AssassinG.ScsyERP.WebBoss.Intercepts;
 
+import cn.AssassinG.ScsyERP.WebBoss.utils.HttpSessionUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HttpRequestIntercepter implements HandlerInterceptor {
 
         public static final String MAPKEY = "ParamMap";
-        private static final String originHeader = "Access-Control-Allow-Origin";
-//        private static final String methodsHeader = "Access-Control-Allow-Methods";
-//        private static final String headerHeader = "Access-Control-Allow-Headers";
+
         /**
          * 在请求处理之前执行，
          * 该方法主要是用于准备资源数据的，
@@ -34,25 +34,8 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
                 }
                 request.setAttribute(MAPKEY, paramMap);
             }
-
-            showCookies(request);
-
-//            if(!response.containsHeader(originHeader)) {
-//                String origin = request.getHeader("Origin");
-//                if(origin == null) {
-//                    String referer = request.getHeader("Referer");
-//                    if(referer != null) {
-//                        origin = referer.substring(0, referer.indexOf("/", 7));
-//                    }
-//                }
-//                response.setHeader("Access-Control-Allow-Origin", origin);
-//            }
-//            response.setContentType("application/json;charset=utf-8");
-//            response.setHeader("Access-Control-Allow-Origin", "*");
-//            response.setHeader("Access-Control-Allow-Credentials", "true");
-//            response.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS");
-//            response.setHeader("Access-Control-Allow-Headers", "Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Origin");
-//            response.setHeader("Access-Control-Max-Age", "3600");
+            HttpSessionUtils.showCookies(request);
+            HttpSessionUtils.setCORS(request, response);
             return true;
         }
         /**
@@ -62,8 +45,8 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
          */
         @Override
         public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-            addCookie(response);
 //            System.out.println("AppRequestInterceptor====>preHandle");
+            HttpSessionUtils.addCookie(response);
 //            String method= request.getMethod();
 //            if (method.equals("OPTIONS")){
 //                response.setStatus(200);
@@ -83,34 +66,4 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
         public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 //            System.out.println("AppRequestInterceptor====>preHandle");
         }
-
-    //读取cookie数组，之后迭代出各个cookie
-    public static void showCookies(HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();//根据请求数据，找到cookie数组
-
-        if (null==cookies) {//如果没有cookie数组
-            System.out.println("没有cookie");
-        } else {
-            for(Cookie cookie : cookies){
-                System.out.println("cookieName:"+cookie.getName()+",cookieValue:"+ cookie.getValue());
-            }
-        }
-    }
-
-    //创建cookie，并将新cookie添加到“响应对象”response中。
-    public static void addCookie(HttpServletResponse response){
-        System.out.println("set cookie");
-        Cookie cookie = new Cookie("name_test","value_test");//创建新cookie
-        cookie.setMaxAge(5 * 60);// 设置存在时间为5分钟
-        cookie.setPath("/");//设置作用域
-//        cookie.setDomain("http://localhost:2333");
-        response.addCookie(cookie);//将cookie添加到response的cookie数组中返回给客户端
-//        Collection<String> headerNames = response.getHeaderNames();
-//        Iterator<String> iterator = headerNames.iterator();
-//        System.out.println("In addCookie, check:");
-//        while(iterator.hasNext()){
-//            String headerName = iterator.next();
-//            System.out.println(response.getHeader(headerName));
-//        }
-    }
 }

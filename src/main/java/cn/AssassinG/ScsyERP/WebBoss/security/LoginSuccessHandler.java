@@ -2,8 +2,8 @@ package cn.AssassinG.ScsyERP.WebBoss.security;
 
 import cn.AssassinG.ScsyERP.User.facade.entity.User;
 import cn.AssassinG.ScsyERP.User.facade.service.UserServiceFacade;
-import cn.AssassinG.ScsyERP.WebBoss.Intercepts.HttpRequestIntercepter;
 import cn.AssassinG.ScsyERP.WebBoss.enums.RetStatusType;
+import cn.AssassinG.ScsyERP.WebBoss.utils.HttpSessionUtils;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,13 +23,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-//        httpServletResponse.setContentType("application/json;charset=utf-8");
-//        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-//        httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
-//        httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS");
-//        httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Origin");
-//        httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
-        HttpRequestIntercepter.addCookie(httpServletResponse);
+        HttpSessionUtils.setCORS(httpServletRequest, httpServletResponse);
+        HttpSessionUtils.addCookie(httpServletResponse);
         JSONObject retObject = new JSONObject();
         retObject.put("status", RetStatusType.StatusSuccess.getStatus());
         retObject.put("msg", "登录成功");
