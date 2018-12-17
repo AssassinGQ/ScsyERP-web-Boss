@@ -62,6 +62,7 @@
                 <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.BooleanConverter" />
                 <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.AccountStatusConverter" />
                 <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.InStorageFormStatusConverter" />
+                <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.TimeStampConverter" />
             </list>
         </property>
     </bean>
