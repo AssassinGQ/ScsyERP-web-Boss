@@ -16,14 +16,14 @@ import java.util.Set;
 
 public class MyUserDetailService implements UserDetailsService {
     @Autowired
-    private UserServiceFacade userService;
+    private UserServiceFacade userServiceFacade;
     private static Logger logger = Logger.getLogger(MyUserDetailService.class);
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userService.findUserByUname(s);
+        User user = userServiceFacade.findUserByUname(s);
         if(user == null)
             throw new UsernameNotFoundException("");
-        Set<Permission> permissions = userService.findUserFinalPermissions(user.getId());
+        Set<Permission> permissions = userServiceFacade.findUserFinalPermissions(user.getId());
         List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
         for(Permission permission : permissions){
             logger.info(permission);
