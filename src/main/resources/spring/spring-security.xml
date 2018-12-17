@@ -14,7 +14,7 @@
     <security:http pattern="/**/*.css" security="none" />
     <security:http pattern="/**/*.js" security="none" />
     <security:http pattern="/user/register" security="none" />
-    <security:http pattern="/user/dologin" security="none" />
+    <security:http pattern="/user/login" security="none" />
     <security:http pattern="/user/sessionTimeOut" security="none" />
     <security:http auto-config="true" use-expressions="false" authentication-manager-ref="myAuthenticationManager">
         <!--login-page为登录页面跳转url，login-processing-url为登录页面中登录表单提交的url-->
