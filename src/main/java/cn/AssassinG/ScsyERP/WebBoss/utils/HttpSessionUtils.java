@@ -11,22 +11,24 @@ public class HttpSessionUtils {
     public static final String credentialsHeader = "Access-Control-Allow-Credentials";
     public static final String maxAgeHeader = "Access-Control-Max-Age";
     public static void setCORS(HttpServletRequest request, HttpServletResponse response){
-        response.setContentType("application/json;charset=utf-8");
-        if(!response.containsHeader(originHeader)) {
-            String origin = request.getHeader("Origin");
-            if(origin == null) {
-                String referer = request.getHeader("Referer");
-                if(referer != null) {
-                    origin = referer.substring(0, referer.indexOf("/", 7));
+        if(true){
+            response.setContentType("application/json;charset=utf-8");
+            if(!response.containsHeader(originHeader)) {
+                String origin = request.getHeader("Origin");
+                if(origin == null) {
+                    String referer = request.getHeader("Referer");
+                    if(referer != null) {
+                        origin = referer.substring(0, referer.indexOf("/", 7));
+                    }
                 }
+                response.setHeader(originHeader, origin);
             }
-            response.setHeader(originHeader, origin);
-        }
 //            response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader(credentialsHeader, "true");
-        response.setHeader(methodsHeader, "POST,GET,PUT,DELETE,OPTIONS");
-        response.setHeader(headerHeader, "Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Origin");
-        response.setHeader(maxAgeHeader, "3600");
+            response.setHeader(credentialsHeader, "true");
+            response.setHeader(methodsHeader, "POST,GET,PUT,DELETE,OPTIONS");
+            response.setHeader(headerHeader, "Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Origin");
+            response.setHeader(maxAgeHeader, "3600");
+        }
     }
 
     //读取cookie数组，之后迭代出各个cookie

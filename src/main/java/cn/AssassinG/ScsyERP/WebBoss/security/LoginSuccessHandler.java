@@ -24,7 +24,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         HttpSessionUtils.setCORS(httpServletRequest, httpServletResponse);
-        HttpSessionUtils.addCookie(httpServletRequest, httpServletResponse);
+//        HttpSessionUtils.addCookie(httpServletRequest, httpServletResponse);
         JSONObject retObject = new JSONObject();
         retObject.put("status", RetStatusType.StatusSuccess.getStatus());
         retObject.put("msg", "登录成功");
