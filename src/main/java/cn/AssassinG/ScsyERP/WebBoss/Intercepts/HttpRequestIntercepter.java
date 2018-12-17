@@ -103,14 +103,14 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
         Cookie cookie = new Cookie("name_test","value_test");//创建新cookie
         cookie.setMaxAge(5 * 60);// 设置存在时间为5分钟
         cookie.setPath("/");//设置作用域
-        cookie.setDomain("http://localhost:2333");
+//        cookie.setDomain("http://localhost:2333");
         response.addCookie(cookie);//将cookie添加到response的cookie数组中返回给客户端
-        Collection<String> headerNames = response.getHeaderNames();
-        Iterator<String> iterator = headerNames.iterator();
-        System.out.println("In addCookie, check:");
-        while(iterator.hasNext()){
-            String headerName = iterator.next();
-            System.out.println(response.getHeader(headerName));
-        }
+//        Collection<String> headerNames = response.getHeaderNames();
+//        Iterator<String> iterator = headerNames.iterator();
+//        System.out.println("In addCookie, check:");
+//        while(iterator.hasNext()){
+//            String headerName = iterator.next();
+//            System.out.println(response.getHeader(headerName));
+//        }
     }
 }
