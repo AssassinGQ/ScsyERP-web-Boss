@@ -20,6 +20,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -208,8 +211,20 @@ public class UserController extends BaseController<User> {
 
     @RequestMapping(value = "/mmlogin", method = RequestMethod.POST)//测试跨域用
     @ResponseBody
-    public JSONObject login(String UserName, String PassWord){
-       return getResultJSON(RetStatusType.StatusFailure, "登錄失敗");
+    public JSONObject login(String UserName, String PassWord, HttpServletRequest request, HttpServletResponse response){
+        String origin = request.getHeader("Origin");
+        if(origin == null) {
+            String referer = request.getHeader("Referer");
+            if(referer != null) {
+                origin = referer.substring(0, referer.indexOf("/", 7));
+            }
+        }
+        Cookie cookie = new Cookie("name_test","value_test");//创建新cookie
+        cookie.setMaxAge(5 * 60);// 设置存在时间为5分钟
+        cookie.setPath("/");//设置作用域
+        cookie.setDomain(origin);
+        response.addCookie(cookie);
+        return getResultJSON(RetStatusType.StatusFailure, "登陆失败");
     }
 
 //    @RequestMapping(value = "/reg", method = RequestMethod.POST)//提交注册
