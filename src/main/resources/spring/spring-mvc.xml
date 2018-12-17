@@ -60,6 +60,8 @@
                 <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.ProductStatusConverter" />
                 <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.UserTypeConverter" />
                 <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.BooleanConverter" />
+                <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.AccountStatusConverter" />
+                <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.InStorageFormStatusConverter" />
             </list>
         </property>
     </bean>
