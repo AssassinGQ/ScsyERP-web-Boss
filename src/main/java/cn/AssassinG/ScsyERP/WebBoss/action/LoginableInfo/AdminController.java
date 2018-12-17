@@ -56,16 +56,21 @@ public class AdminController extends LoginableBaseController<Admin> {
     public JSONObject create(Admin admin, User user){
         SecurityContext sctx = SecurityContextHolder.getContext();
         Authentication auth = sctx.getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getDetails();
-        Principal principal = (Principal) auth.getPrincipal();
-        if(userDetails != null)
-            System.out.println("username : " + userDetails.getUsername());
-        else
-            System.out.println("user detail null");
-        if(principal != null)
-            System.out.println("name : " + principal.getName());
-        else
-            System.out.println("principal null");
+        if(auth == null){
+            System.out.println("Authencation null");
+        }else{
+            UserDetails userDetails = (UserDetails) auth.getDetails();
+            Principal principal = (Principal) auth.getPrincipal();
+            if(userDetails != null)
+                System.out.println("username : " + userDetails.getUsername());
+            else
+                System.out.println("user detail null");
+            if(principal != null)
+                System.out.println("name : " + principal.getName());
+            else
+                System.out.println("principal null");
+        }
+
         return super.createImpl(admin, user);
     }
 

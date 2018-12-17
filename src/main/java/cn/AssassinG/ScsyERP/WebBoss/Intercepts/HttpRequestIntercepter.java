@@ -3,6 +3,7 @@ package cn.AssassinG.ScsyERP.WebBoss.Intercepts;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
@@ -36,6 +37,7 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
                 request.setAttribute(MAPKEY, paramMap);
             }
 
+            showCookies(request);
 
 //            if(!response.containsHeader(originHeader)) {
 //                String origin = request.getHeader("Origin");
@@ -62,6 +64,7 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
          */
         @Override
         public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+            addCookie(response);
 //            System.out.println("AppRequestInterceptor====>preHandle");
 //            String method= request.getMethod();
 //            if (method.equals("OPTIONS")){
@@ -82,4 +85,25 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
         public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 //            System.out.println("AppRequestInterceptor====>preHandle");
         }
+
+    //读取cookie数组，之后迭代出各个cookie
+    public void showCookies(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();//根据请求数据，找到cookie数组
+
+        if (null==cookies) {//如果没有cookie数组
+            System.out.println("没有cookie");
+        } else {
+            for(Cookie cookie : cookies){
+                System.out.println("cookieName:"+cookie.getName()+",cookieValue:"+ cookie.getValue());
+            }
+        }
+    }
+
+    //创建cookie，并将新cookie添加到“响应对象”response中。
+    public static void addCookie(HttpServletResponse response){
+        Cookie cookie = new Cookie("name_test","value_test");//创建新cookie
+        cookie.setMaxAge(5 * 60);// 设置存在时间为5分钟
+        cookie.setPath("/");//设置作用域
+        response.addCookie(cookie);//将cookie添加到response的cookie数组中返回给客户端
+    }
 }

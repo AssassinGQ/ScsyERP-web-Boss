@@ -2,6 +2,7 @@ package cn.AssassinG.ScsyERP.WebBoss.security;
 
 import cn.AssassinG.ScsyERP.User.facade.entity.User;
 import cn.AssassinG.ScsyERP.User.facade.service.UserServiceFacade;
+import cn.AssassinG.ScsyERP.WebBoss.Intercepts.HttpRequestIntercepter;
 import cn.AssassinG.ScsyERP.WebBoss.enums.RetStatusType;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS");
         httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Origin");
         httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
+        HttpRequestIntercepter.addCookie(httpServletResponse);
         JSONObject retObject = new JSONObject();
         retObject.put("status", RetStatusType.StatusSuccess.getStatus());
         retObject.put("msg", "登录成功");
