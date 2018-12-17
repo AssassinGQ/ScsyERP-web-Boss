@@ -46,7 +46,7 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
         @Override
         public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 //            System.out.println("AppRequestInterceptor====>preHandle");
-            HttpSessionUtils.addCookie(request, response);
+//            HttpSessionUtils.addCookie(request, response);
 //            String method= request.getMethod();
 //            if (method.equals("OPTIONS")){
 //                response.setStatus(200);

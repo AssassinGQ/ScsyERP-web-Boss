@@ -14,6 +14,7 @@ import cn.AssassinG.ScsyERP.common.exceptions.DaoException;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -158,6 +159,7 @@ public class PmsController extends BaseController<Role> {
     *   用户这边是点选，角色用勾选，勾中父角色自动勾中相应子角色
     */
 
+    @Secured("ROLE_SUPER_ADMIN")
     @RequestMapping(value="/getRolesInherit", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject getRolesInherit(){
