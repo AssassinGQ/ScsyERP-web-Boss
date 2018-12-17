@@ -13,7 +13,7 @@ import java.util.Map;
 public class HttpRequestIntercepter implements HandlerInterceptor {
 
         public static final String MAPKEY = "ParamMap";
-//        private static final String originHeader = "Access-Control-Allow-Origin";
+        private static final String originHeader = "Access-Control-Allow-Origin";
 //        private static final String methodsHeader = "Access-Control-Allow-Methods";
 //        private static final String headerHeader = "Access-Control-Allow-Headers";
         /**
@@ -39,18 +39,18 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
 
             showCookies(request);
 
-//            if(!response.containsHeader(originHeader)) {
-//                String origin = request.getHeader("Origin");
-//                if(origin == null) {
-//                    String referer = request.getHeader("Referer");
-//                    if(referer != null) {
-//                        origin = referer.substring(0, referer.indexOf("/", 7));
-//                    }
-//                }
-//                response.setHeader("Access-Control-Allow-Origin", origin);
-//            }
+            if(!response.containsHeader(originHeader)) {
+                String origin = request.getHeader("Origin");
+                if(origin == null) {
+                    String referer = request.getHeader("Referer");
+                    if(referer != null) {
+                        origin = referer.substring(0, referer.indexOf("/", 7));
+                    }
+                }
+                response.setHeader("Access-Control-Allow-Origin", origin);
+            }
             response.setContentType("application/json;charset=utf-8");
-            response.setHeader("Access-Control-Allow-Origin", "*");
+//            response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Allow-Credentials", "true");
             response.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS");
             response.setHeader("Access-Control-Allow-Headers", "Content-Type, Content-Length, Authorization, Accept, X-Requested-With, Origin");
