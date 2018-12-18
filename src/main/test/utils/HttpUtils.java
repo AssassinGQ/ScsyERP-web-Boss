@@ -1,14 +1,7 @@
 package utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.io.*;
+import java.net.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -103,16 +96,31 @@ public class HttpUtils {
             out = new PrintWriter(conn.getOutputStream());
             out.print(Map2param(params));
             out.flush();
-            Map<String, List<String>> map = conn.getHeaderFields();
-            for (String key : map.keySet()) {
-                System.out.println(key + ": " + map.get(key));
+            try{
+                Map<String, List<String>> map = conn.getHeaderFields();
+                for (String key : map.keySet()) {
+                    System.out.println(key + ": " + map.get(key));
+                }
+            }catch(Exception e){
+                System.out.println(e.getMessage());
             }
-            in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null) {
-                result += line;
-                result += "\r\n";
+            int status = ((HttpURLConnection)conn).getResponseCode();
+            if(status >= 400){
+                in = new BufferedReader(
+                        new InputStreamReader(((HttpURLConnection) conn).getErrorStream()));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    result += line;
+                    result += "\r\n";
+                }
+            }else{
+                in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    result += line;
+                    result += "\r\n";
+                }
             }
         } catch (Exception e) {
             System.out.println("Error in Post"+e);
