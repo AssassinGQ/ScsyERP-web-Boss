@@ -13,9 +13,10 @@ public class InStorageFormControllerTest {
         try{
             Map<String, String> paramMap = new HashMap<>();
             paramMap.put("warehouse", "1");
-            paramMap.put("location", "A");
+            paramMap.put("location", "B");
             System.out.println(paramMap);
-            System.out.println(HttpUtils.Post("http://127.0.0.1:8095/boss/InStorageForm/upload_location",paramMap));
+//            System.out.println(HttpUtils.Post("http://127.0.0.1:8095/boss/InStorageForm/upload_location",paramMap));
+            System.out.println(HttpUtils.Post("http://120.76.219.196:8082/ScsyERP-web-Boss/InStorageForm/upload_location",paramMap));
         }catch (Exception e){
             e.printStackTrace();
         }
