@@ -9,6 +9,10 @@ import java.util.Map.Entry;
 
 public class HttpUtils {
 
+    private static String url_remote = "http://120.76.219.196:8082/ScsyERP";
+    private static String url_local = "http://127.0.0.1:8095/boss";
+    private static String URL = url_remote;
+
 	private static final int CONNECT_TIMEOUT = 2*1000;  
 	private static final int READ_TIMEOUT = 5*1000;
 		
@@ -32,7 +36,8 @@ public class HttpUtils {
         	Entry<String, String> entry = iterator.next();
         	param.append(encoderUTF(entry.getKey())+"="+encoderUTF(entry.getValue())+"&");
         }
-        param.deleteCharAt(param.length()-1);
+        if(param.length() >= 1)
+            param.deleteCharAt(param.length()-1);
         return param.toString();
 	}
 	
@@ -40,7 +45,7 @@ public class HttpUtils {
         String result = "";
         BufferedReader in = null;
         try {
-            String urlNameString = url + "?" + Map2param(params);
+            String urlNameString = URL + url + "?" + Map2param(params);
             URL realUrl = new URL(urlNameString);
             URLConnection connection = realUrl.openConnection();
             connection.setRequestProperty("accept", "*/*");
@@ -50,16 +55,32 @@ public class HttpUtils {
 //            connection.setRequestProperty("user-agent",
 //                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             connection.connect();
-            Map<String, List<String>> map = connection.getHeaderFields();
-            for (String key : map.keySet()) {
-                System.out.println(key + ": " + map.get(key));
+            try{
+                Map<String, List<String>> map = connection.getHeaderFields();
+                for (String key : map.keySet()) {
+                    System.out.println(key + ": " + map.get(key));
+                }
+            }catch(Exception e){
+                System.out.println(e.getMessage());
             }
-            in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null) {
-                result += line;
-                result += "\r\n";
+            int status = ((HttpURLConnection)connection).getResponseCode();
+            if(status >= 400){
+                System.err.println("Status : " + status);
+                in = new BufferedReader(
+                        new InputStreamReader(((HttpURLConnection) connection).getErrorStream()));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    result += line;
+                    result += "\r\n";
+                }
+            }else{
+                in = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    result += line;
+                    result += "\r\n";
+                }
             }
         } catch (Exception e) {
             System.out.println("Error in Get" + e);
@@ -82,8 +103,7 @@ public class HttpUtils {
         BufferedReader in = null;
         String result = "";
         try {
-            URL realUrl = new URL(url);
-            System.out.println(url);
+            URL realUrl = new URL(URL + url);
             URLConnection conn = realUrl.openConnection();
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
@@ -106,6 +126,7 @@ public class HttpUtils {
             }
             int status = ((HttpURLConnection)conn).getResponseCode();
             if(status >= 400){
+                System.err.println("Status : " + status);
                 in = new BufferedReader(
                         new InputStreamReader(((HttpURLConnection) conn).getErrorStream()));
                 String line;

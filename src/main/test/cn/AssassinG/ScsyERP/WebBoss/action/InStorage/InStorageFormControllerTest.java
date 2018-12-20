@@ -12,11 +12,47 @@ public class InStorageFormControllerTest {
     public void uploadLocation() {
         try{
             Map<String, String> paramMap = new HashMap<>();
+            paramMap.put("warehouse", "2");
+            paramMap.put("location", "B");
+//            System.out.println(paramMap);
+            System.out.println(HttpUtils.Post("/InStorageForm/upload_location",paramMap));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void create() {
+        try{
+            Map<String, String> paramMap = new HashMap<>();
+//            System.out.println(paramMap);
+            System.out.println(HttpUtils.Post("/InStorageForm/create",paramMap));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void update() {
+        try{
+            Map<String, String> paramMap = new HashMap<>();
+//            paramMap.put("warehouse", "1");
+//            paramMap.put("location", "B");
+//            System.out.println(paramMap);
+            System.out.println(HttpUtils.Post("/InStorageForm/update",paramMap));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void complete() {
+        try{
+            Map<String, String> paramMap = new HashMap<>();
             paramMap.put("warehouse", "1");
             paramMap.put("location", "B");
             System.out.println(paramMap);
-//            System.out.println(HttpUtils.Post("http://127.0.0.1:8095/boss/InStorageForm/upload_location",paramMap));
-            System.out.println(HttpUtils.Post("http://120.76.219.196:8082/ScsyERP-web-Boss/InStorageForm/upload_location",paramMap));
+            System.out.println(HttpUtils.Post("/InStorageForm/complete",paramMap));
         }catch (Exception e){
             e.printStackTrace();
         }
