@@ -14,7 +14,7 @@ public class HttpUtils {
     private static String URL = url_remote;
 
 	private static final int CONNECT_TIMEOUT = 2*1000;  
-	private static final int READ_TIMEOUT = 5*1000;
+	private static final int READ_TIMEOUT = 10*1000;
 		
 	private static String encoderUTF(String in)
 	{

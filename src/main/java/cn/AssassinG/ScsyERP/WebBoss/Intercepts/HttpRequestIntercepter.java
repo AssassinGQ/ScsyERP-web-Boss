@@ -1,6 +1,7 @@
 package cn.AssassinG.ScsyERP.WebBoss.Intercepts;
 
 import cn.AssassinG.ScsyERP.WebBoss.utils.HttpSessionUtils;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,10 +25,10 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //            System.out.println("HttpRequestIntercepter====>preHandle");
-            if(request.getRequestURI().endsWith("update")){
+            if (request.getRequestURI().endsWith("update")) {
                 Enumeration<String> paramNames = request.getParameterNames();
                 Map<String, String> paramMap = new HashMap<>();
-                while(paramNames.hasMoreElements()){
+                while (paramNames.hasMoreElements()) {
                     String name = paramNames.nextElement();//得到参数名
                     String value = request.getParameter(name);//通过参数名获取对应的值
                     paramMap.put(name, value);
@@ -36,6 +37,11 @@ public class HttpRequestIntercepter implements HandlerInterceptor {
             }
             HttpSessionUtils.showCookies(request);
             HttpSessionUtils.setCORS(request, response);
+
+            if (request.getMethod().equals(HttpMethod.OPTIONS)) {
+                response.setStatus(200);
+                return false;
+            }
             return true;
         }
         /**

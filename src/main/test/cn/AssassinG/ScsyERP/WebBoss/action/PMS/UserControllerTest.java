@@ -49,9 +49,9 @@ public class UserControllerTest {
     public void login() {
         try{
             Map<String, String> paramMap = new HashMap<>();
-            paramMap.put("UserName", "hgq");
-            paramMap.put("PassWord", "123456");
-            System.out.println(HttpUtils.Post("http://120.76.219.196:8082/user/mmlogin",paramMap));
+            paramMap.put("userName", "superadmin");
+            paramMap.put("passWord", "123456");
+            System.out.println(HttpUtils.Post("/user/dologin",paramMap));
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -61,8 +61,8 @@ public class UserControllerTest {
     public void getVcode() {
         try{
             Map<String, String> paramMap = new HashMap<>();
-            paramMap.put("Phone", "18868187538");
-            System.out.println(HttpUtils.Post("http://127.0.0.1:8080/user/getVcode",paramMap));
+            paramMap.put("phone", "18888888888");
+            System.out.println(HttpUtils.Post("/user/getVcode",paramMap));
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -74,9 +74,27 @@ public class UserControllerTest {
 
     @Test
     public void changeUname() {
+        try{
+            Map<String, String> paramMap = new HashMap<>();
+            paramMap.put("userId", "2");
+            paramMap.put("vCode", "123456");
+            paramMap.put("newUserName", "aaaaaa");
+            System.out.println(HttpUtils.Post("/user/changeUname",paramMap));
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Test
     public void changePhone() {
+        try{
+            Map<String, String> paramMap = new HashMap<>();
+            paramMap.put("userId", "2");
+            paramMap.put("vCode", "123456");
+            paramMap.put("newPhone", "18899999999");
+            System.out.println(HttpUtils.Post("/user/changePhone",paramMap));
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

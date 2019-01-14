@@ -21,12 +21,17 @@ import java.util.Map;
 public abstract class LoginableBaseController<T extends LoginableEntity> extends BaseController<T> {
 
     @Autowired
-    private UserServiceFacade userServiceFacade;
-    protected abstract LoginableService<T> getLoginableService();//todo pom.xml中能够不引入service工程（在idea中，如果不引入，会报错：spring无法autowired。测试一下是不是是idea的问题，实际运行没有问题）
+    private UserServiceFacade userServiceFacade;//todo pom.xml中能够不引入service工程（在idea中，如果不引入，会报错：spring无法autowired。测试一下是不是是idea的问题，实际运行没有问题）
+    protected abstract LoginableService<T> getLoginableService();
 
     @Override
     protected BaseService<T> getService() {
         return getLoginableService();
+    }
+
+    @Override
+    protected JSONObject createImpl(T entity) {
+        return getResultJSON("可登录基本信息需要提供登录信息才能创建");
     }
 
     //todo 存在安全隐患，用户知道字段名后，可以在创建时制定一些受限制的字段的值
@@ -58,7 +63,7 @@ public abstract class LoginableBaseController<T extends LoginableEntity> extends
         }
     }
 
-    //TODO 这个不应该写在这里 应该写入LoginBiz,这还需要定义新的联合bean
+    //TODO 这个不应该写在这里 应该写入LoginBiz,但那样做还需要定义新的联合bean
     protected JSONObject getByIdImpl(Long entityId){
         try{
             LoginableEntity loginableEntity = getLoginableService().getById(entityId);

@@ -29,12 +29,24 @@ public class AdminControllerTest {
     }
 
     @Test
+    public void update() {
+        try{
+            Map<String, String> paramMap = new HashMap<>();
+            paramMap.put("entityId", "1");
+            paramMap.put("name", "asde");
+            System.out.println(HttpUtils.Post("/BasicInfo/Admin/update",paramMap));
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
     public void query() {
         try{
             Map<String, String> paramMap = new HashMap<>();
             paramMap.put("limit", "10");
             paramMap.put("page", "1");
-            System.out.println(HttpUtils.Get("http://127.0.0.1:8080/BasicInfo/Admin/query",paramMap));
+            System.out.println(HttpUtils.Get("/BasicInfo/Admin/query",paramMap));
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
