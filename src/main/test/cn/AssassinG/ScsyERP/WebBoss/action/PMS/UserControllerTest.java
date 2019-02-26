@@ -41,6 +41,18 @@ public class UserControllerTest {
 //        user.setCorporation(1L);
 //        JSONObject jsonObject = userController.getAccount(token, AccountTypeCorporation, StringUtils.getRandomStr(6), user);
 //        System.out.println(jsonObject);
+        try{
+            Map<String, String> paramMap = new HashMap<>();
+            paramMap.put("token", "superadminabcd1234");
+            paramMap.put("userName", "corp1");
+            paramMap.put("passWord", "123456");
+            paramMap.put("phone", "18868183333");
+            paramMap.put("name", "corp1");
+            paramMap.put("type", String.valueOf(AccountTypeCorporation));
+            System.out.println(HttpUtils.Post("/user/getAccount",paramMap));
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     //测试SpringSecurity的登录功能
