@@ -20,15 +20,20 @@ public class MyUserDetailService implements UserDetailsService {
     private static Logger logger = Logger.getLogger(MyUserDetailService.class);
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userServiceFacade.findUserByUname(s);
-        if(user == null)
-            throw new UsernameNotFoundException("");
-        Set<Permission> permissions = userServiceFacade.findUserFinalPermissions(user.getId());
-        List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-        for(Permission permission : permissions){
-            logger.info(permission);
-            authorities.add(new SimpleGrantedAuthority(permission.getPermissionName()));
+        try{
+            User user = userServiceFacade.findUserByUname(s);
+            if(user == null)
+                throw new UsernameNotFoundException("");
+            Set<Permission> permissions = userServiceFacade.findUserFinalPermissions(user.getId());
+            List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+            for(Permission permission : permissions){
+                logger.info(permission);
+                authorities.add(new SimpleGrantedAuthority(permission.getPermissionName()));
+            }
+            return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassWord(), authorities);
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
         }
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassWord(), authorities);
     }
 }
