@@ -92,53 +92,53 @@ public class OutStorageFormController extends BaseController<OutStorageForm> {
         }
     }
 
-    @RequestMapping(value = "/addDriveWorker", method = RequestMethod.POST)
-    @ResponseBody
-    public JSONObject addDriveWorker(Long outStorageForm, Long driveWorker){
-        try{
-            JSONArray jsonArray = new JSONArray();
-            jsonArray.add(driveWorker);
-            outStorageFormServiceFacade.addDriveWorkers(outStorageForm, jsonArray.toJSONString());
-            return getResultJSON(RetStatusType.StatusSuccess, "出库单添加行车工信息成功", null);
-        }catch (DaoException | BizException e){
-            return getResultJSON(e.getMessage());
-        }
-    }
-
-    @RequestMapping(value = "/removeDriveWorker", method = RequestMethod.POST)
-    @ResponseBody
-    public JSONObject removeDriveWorker(Long outStorageForm, Long driveWorker){
-        try{
-            outStorageFormServiceFacade.removeDriveWorker(outStorageForm, driveWorker);
-            return getResultJSON(RetStatusType.StatusSuccess, "出库单移除行车工信息成功", null);
-        }catch (DaoException | BizException e){
-            return getResultJSON(e.getMessage());
-        }
-    }
-
-    @RequestMapping(value = "/addLiftWorker", method = RequestMethod.POST)
-    @ResponseBody
-    public JSONObject addLiftWorker(Long outStorageForm, Long liftWorker){
-        try{
-            JSONArray jsonArray = new JSONArray();
-            jsonArray.add(liftWorker);
-            outStorageFormServiceFacade.addLiftWorkers(outStorageForm, jsonArray.toJSONString());
-            return getResultJSON(RetStatusType.StatusSuccess, "出库单添加起重工信息成功", null);
-        }catch (DaoException | BizException e){
-            return getResultJSON(e.getMessage());
-        }
-    }
-
-    @RequestMapping(value = "/removeLiftWorker", method = RequestMethod.POST)
-    @ResponseBody
-    public JSONObject removeLiftWorker(Long outStorageForm, Long liftWorker){
-        try{
-            outStorageFormServiceFacade.removeLiftWorker(outStorageForm, liftWorker);
-            return getResultJSON(RetStatusType.StatusSuccess, "出库单移除起重工信息成功", null);
-        }catch (DaoException | BizException e){
-            return getResultJSON(e.getMessage());
-        }
-    }
+//    @RequestMapping(value = "/addDriveWorker", method = RequestMethod.POST)
+//    @ResponseBody
+//    public JSONObject addDriveWorker(Long outStorageForm, Long driveWorker){
+//        try{
+//            JSONArray jsonArray = new JSONArray();
+//            jsonArray.add(driveWorker);
+//            outStorageFormServiceFacade.addDriveWorkers(outStorageForm, jsonArray.toJSONString());
+//            return getResultJSON(RetStatusType.StatusSuccess, "出库单添加行车工信息成功", null);
+//        }catch (DaoException | BizException e){
+//            return getResultJSON(e.getMessage());
+//        }
+//    }
+//
+//    @RequestMapping(value = "/removeDriveWorker", method = RequestMethod.POST)
+//    @ResponseBody
+//    public JSONObject removeDriveWorker(Long outStorageForm, Long driveWorker){
+//        try{
+//            outStorageFormServiceFacade.removeDriveWorker(outStorageForm, driveWorker);
+//            return getResultJSON(RetStatusType.StatusSuccess, "出库单移除行车工信息成功", null);
+//        }catch (DaoException | BizException e){
+//            return getResultJSON(e.getMessage());
+//        }
+//    }
+//
+//    @RequestMapping(value = "/addLiftWorker", method = RequestMethod.POST)
+//    @ResponseBody
+//    public JSONObject addLiftWorker(Long outStorageForm, Long liftWorker){
+//        try{
+//            JSONArray jsonArray = new JSONArray();
+//            jsonArray.add(liftWorker);
+//            outStorageFormServiceFacade.addLiftWorkers(outStorageForm, jsonArray.toJSONString());
+//            return getResultJSON(RetStatusType.StatusSuccess, "出库单添加起重工信息成功", null);
+//        }catch (DaoException | BizException e){
+//            return getResultJSON(e.getMessage());
+//        }
+//    }
+//
+//    @RequestMapping(value = "/removeLiftWorker", method = RequestMethod.POST)
+//    @ResponseBody
+//    public JSONObject removeLiftWorker(Long outStorageForm, Long liftWorker){
+//        try{
+//            outStorageFormServiceFacade.removeLiftWorker(outStorageForm, liftWorker);
+//            return getResultJSON(RetStatusType.StatusSuccess, "出库单移除起重工信息成功", null);
+//        }catch (DaoException | BizException e){
+//            return getResultJSON(e.getMessage());
+//        }
+//    }
 
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
     @ResponseBody
