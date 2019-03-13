@@ -13,4 +13,10 @@ public class TestUtils {
         }
         System.out.println("End of Print Map " + paramMap);
     }
+
+    public static <T> void printBean(T Bean){
+        System.out.println("Printing " + Bean.getClass());
+        System.out.println(Bean);
+        System.out.println("End of Print " + Bean.getClass());
+    }
 }
