@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Map;
-
 @Controller
 @RequestMapping("/TruckLog")
 public class TruckLogController extends BaseController<TruckLog> {
@@ -59,8 +57,8 @@ public class TruckLogController extends BaseController<TruckLog> {
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
-    public JSONObject query(Map<String, Object> paramMap){
-        return super.queryImpl(paramMap);
+    public JSONObject query(String limit, String page, TruckLog truckLog){
+        return super.queryImpl(limit, page, truckLog);
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.GET)//查询信息

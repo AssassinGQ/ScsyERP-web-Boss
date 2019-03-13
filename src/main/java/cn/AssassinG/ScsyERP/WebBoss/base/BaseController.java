@@ -1,6 +1,7 @@
 package cn.AssassinG.ScsyERP.WebBoss.base;
 
 import cn.AssassinG.ScsyERP.WebBoss.enums.RetStatusType;
+import cn.AssassinG.ScsyERP.WebBoss.utils.JavaBeanUtils;
 import cn.AssassinG.ScsyERP.common.core.service.BaseService;
 import cn.AssassinG.ScsyERP.common.entity.BaseEntity;
 import cn.AssassinG.ScsyERP.common.exceptions.BizException;
@@ -85,20 +86,33 @@ public abstract class BaseController<T extends BaseEntity> implements Serializab
         }
     }
 
-    protected JSONObject queryImpl(Map<String, Object> paramMap){
+    protected JSONObject queryImpl(String limit, String page, BaseEntity baseEntity){
         try{
-            Integer limit = (Integer) paramMap.get("limit");
-            Integer page = (Integer)paramMap.get("page");
             if(limit != null || page != null){
-                if(page == null)
-                    page = 1;
-                if(limit == null)
-                    limit = 20;
-                PageParam pageParam = new PageParam(page, limit);
-                paramMap.remove("limit");
-                paramMap.remove("page");
+                Integer limitInt, pageInt;
+                if(limit == null){
+                    limitInt = 20;
+                    try{
+                        pageInt = Integer.parseInt(page);
+                    }catch(Exception e){
+                        pageInt = 1;
+                    }
+                }else if(page == null){
+                    try{
+                        limitInt = Integer.parseInt(limit);
+                    }catch(Exception e){
+                        limitInt = 20;
+                    }
+                    pageInt = 1;
+                }else{
+                    limitInt = Integer.parseInt(limit);
+                    pageInt = Integer.parseInt(page);
+                }
+                PageParam pageParam = new PageParam(pageInt, limitInt);
+                Map<String, Object> paramMap = JavaBeanUtils.Bean2Map(baseEntity);
                 return getResultJSON("查询"+getClassDesc()+"信息成功", getService().listPage(pageParam, paramMap));
             }else{
+                Map<String, Object> paramMap = JavaBeanUtils.Bean2Map(baseEntity);
                 return getResultJSON("查询"+getClassDesc()+"信息成功", getService().listBy(paramMap));
             }
         }catch (DaoException | BizException e){

@@ -52,8 +52,8 @@ public class MyFileController extends BaseController<MyFile> {
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
-    public JSONObject query(Map<String, Object> paramMap){
-        return super.queryImpl(paramMap);
+    public JSONObject query(String limit, String page, MyFile myFile){
+        return super.queryImpl(limit, page, myFile);
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.GET)//查询信息

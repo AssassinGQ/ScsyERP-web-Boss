@@ -62,8 +62,8 @@ public class InStorageFormController extends BaseController<InStorageForm> {
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
-    public JSONObject query(Map<String, Object> paramMap){
-        return super.queryImpl(paramMap);
+    public JSONObject query(String limit, String page, InStorageForm inStorageForm){
+        return super.queryImpl(limit, page, inStorageForm);
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.GET)//查询信息

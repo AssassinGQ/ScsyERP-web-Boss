@@ -10,7 +10,6 @@ import cn.AssassinG.ScsyERP.WebBoss.Intercepts.HttpRequestIntercepter;
 import cn.AssassinG.ScsyERP.WebBoss.base.LoginableBaseController;
 import cn.AssassinG.ScsyERP.WebBoss.enums.RetStatusType;
 import cn.AssassinG.ScsyERP.WebBoss.utils.JavaBeanUtils;
-import cn.AssassinG.ScsyERP.WebBoss.utils.TestUtils;
 import cn.AssassinG.ScsyERP.common.exceptions.BizException;
 import cn.AssassinG.ScsyERP.common.exceptions.DaoException;
 import cn.AssassinG.ScsyERP.common.page.PageBean;
@@ -105,7 +104,6 @@ public class AdminController extends LoginableBaseController<Admin> {
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
     public JSONObject query(String limit, String page, Admin admin){
-        TestUtils.printBean(admin);
         try{
             if(limit != null || page != null){
                 Integer limitInt, pageInt;

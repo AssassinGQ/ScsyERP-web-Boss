@@ -129,8 +129,8 @@ public class UserController extends BaseController<User> {
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
-    public JSONObject query(Map<String, Object> paramMap){
-        return super.queryImpl(paramMap);
+    public JSONObject query(String limit, String page, User user){
+        return super.queryImpl(limit, page, user);
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.GET)//查询信息

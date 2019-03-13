@@ -9,6 +9,7 @@ import cn.AssassinG.ScsyERP.User.facade.service.UserServiceFacade;
 import cn.AssassinG.ScsyERP.WebBoss.Intercepts.HttpRequestIntercepter;
 import cn.AssassinG.ScsyERP.WebBoss.base.LoginableBaseController;
 import cn.AssassinG.ScsyERP.WebBoss.enums.RetStatusType;
+import cn.AssassinG.ScsyERP.WebBoss.utils.JavaBeanUtils;
 import cn.AssassinG.ScsyERP.common.exceptions.BizException;
 import cn.AssassinG.ScsyERP.common.exceptions.DaoException;
 import cn.AssassinG.ScsyERP.common.page.PageBean;
@@ -66,18 +67,30 @@ public class ConsigneeController extends LoginableBaseController<Consignee> {
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
-    public JSONObject query(Map<String, Object> paramMap){
+    public JSONObject query(String limit, String page, Consignee consignee){
         try{
-            Integer limit = (Integer) paramMap.get("limit");
-            Integer page = (Integer)paramMap.get("page");
             if(limit != null || page != null){
-                if(page == null)
-                    page = 1;
-                if(limit == null)
-                    limit = 20;
-                PageParam pageParam = new PageParam(page, limit);
-                paramMap.remove("limit");
-                paramMap.remove("page");
+                Integer limitInt, pageInt;
+                if(limit == null){
+                    limitInt = 20;
+                    try{
+                        pageInt = Integer.parseInt(page);
+                    }catch(Exception e){
+                        pageInt = 1;
+                    }
+                }else if(page == null){
+                    try{
+                        limitInt = Integer.parseInt(limit);
+                    }catch(Exception e){
+                        limitInt = 20;
+                    }
+                    pageInt = 1;
+                }else{
+                    limitInt = Integer.parseInt(limit);
+                    pageInt = Integer.parseInt(page);
+                }
+                PageParam pageParam = new PageParam(pageInt, limitInt);
+                Map<String, Object> paramMap = JavaBeanUtils.Bean2Map(consignee);
                 PageBean<Consignee> pageBean = consigneeServiceFacade.listPage(pageParam, paramMap);
                 List<Consignee> consignees = pageBean.getRecordList();
                 JSONArray dataArray = new JSONArray();
@@ -109,6 +122,7 @@ public class ConsigneeController extends LoginableBaseController<Consignee> {
                 contentObject.put("data", dataArray);
                 return getResultJSON(RetStatusType.StatusSuccess, "查询"+getClassDesc()+"信息成功", contentObject);
             }else{
+                Map<String, Object> paramMap = JavaBeanUtils.Bean2Map(consignee);
                 List<Consignee> admins = consigneeServiceFacade.listBy(paramMap);
                 JSONArray dataArray = new JSONArray();
                 for(int i = 0; i < admins.size(); i++){

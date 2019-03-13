@@ -53,8 +53,8 @@ public class LiftWorkerController extends UnLoginableBaseController<LiftWorker> 
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
-    public JSONObject query(Map<String, Object> paramMap){
-        return super.queryImpl(paramMap);
+    public JSONObject query(String limit, String page, LiftWorker liftWorker){
+        return super.queryImpl(limit, page, liftWorker);
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.GET)//查询信息

@@ -57,8 +57,8 @@ public class WarehouseController extends UnLoginableBaseController<Warehouse> {
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
-    public JSONObject query(Map<String, Object> paramMap){
-        return super.queryImpl(paramMap);
+    public JSONObject query(String limit, String page, Warehouse warehouse){
+        return super.queryImpl(limit, page, warehouse);
     }
 
     @RequestMapping(value = "/getById", method = RequestMethod.GET)//查询信息
