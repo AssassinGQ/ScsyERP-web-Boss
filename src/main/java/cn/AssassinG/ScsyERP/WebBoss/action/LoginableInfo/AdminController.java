@@ -25,7 +25,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,7 +104,7 @@ public class AdminController extends LoginableBaseController<Admin> {
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
-    public JSONObject query(@RequestParam String limit, @RequestParam String page, Admin admin){
+    public JSONObject query(String limit, String page, Admin admin){
         TestUtils.printBean(admin);
         try{
             if(limit != null || page != null){
