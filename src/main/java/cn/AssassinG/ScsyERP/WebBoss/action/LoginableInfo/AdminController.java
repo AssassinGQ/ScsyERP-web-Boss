@@ -105,7 +105,7 @@ public class AdminController extends LoginableBaseController<Admin> {
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
-    public JSONObject query(@RequestParam String limit, @RequestParam String page, @RequestParam Admin admin){
+    public JSONObject query(@RequestParam String limit, @RequestParam String page, Admin admin){
         TestUtils.printBean(admin);
         try{
             if(limit != null || page != null){
