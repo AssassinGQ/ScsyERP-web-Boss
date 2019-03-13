@@ -104,11 +104,11 @@ public class AdminController extends LoginableBaseController<Admin> {
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
-    public JSONObject query(@RequestParam  Map<String, Object> paramMap){
+    public JSONObject query(@RequestParam  Map<String, String> paramMap){
         TestUtils.printMap(paramMap);
         try{
-            Integer limit = (Integer) paramMap.get("limit");
-            Integer page = (Integer)paramMap.get("page");
+            Integer limit = Integer.parseInt(paramMap.get("limit"));
+            Integer page = Integer.parseInt(paramMap.get("page"));
             if(limit != null || page != null){
                 if(page == null)
                     page = 1;
@@ -117,7 +117,8 @@ public class AdminController extends LoginableBaseController<Admin> {
                 PageParam pageParam = new PageParam(page, limit);
                 paramMap.remove("limit");
                 paramMap.remove("page");
-                PageBean<Admin> pageBean = adminServiceFacade.listPage(pageParam, paramMap);
+//                PageBean<Admin> pageBean = adminServiceFacade.listPage(pageParam, paramMap);
+                PageBean<Admin> pageBean = adminServiceFacade.listPage(pageParam, new HashMap<>());
                 List<Admin> admins = pageBean.getRecordList();
                 JSONArray dataArray = new JSONArray();
                 for(int i = 0; i < admins.size(); i++){
@@ -148,7 +149,8 @@ public class AdminController extends LoginableBaseController<Admin> {
                 contentObject.put("data", dataArray);
                 return getResultJSON(RetStatusType.StatusSuccess, "查询"+getClassDesc()+"信息成功", contentObject);
             }else{
-                List<Admin> admins = adminServiceFacade.listBy(paramMap);
+//                List<Admin> admins = adminServiceFacade.listBy(paramMap);
+                List<Admin> admins = adminServiceFacade.listBy(new HashMap<>());
                 JSONArray dataArray = new JSONArray();
                 for(int i = 0; i < admins.size(); i++){
                     Map<String, Object> queryMap = new HashMap<>();
