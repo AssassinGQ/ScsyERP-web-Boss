@@ -6,6 +6,6 @@ import org.springframework.core.convert.converter.Converter;
 public class GovernmentDeptConverter implements Converter<String, GovernmentDeptType> {
     @Override
     public GovernmentDeptType convert(String s) {
-        return GovernmentDeptType.getEnum(s);
+        return GovernmentDeptType.getEnum(Integer.parseInt(s));
     }
 }
