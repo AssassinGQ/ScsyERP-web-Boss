@@ -54,6 +54,7 @@ public class ProductController extends UnLoginableBaseController<Product> {
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息
     @ResponseBody
     public JSONObject query(String limit, String page, Product product){
+        System.out.println(product);
         return super.queryImpl(limit, page, product);
     }
 
