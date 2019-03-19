@@ -6,7 +6,7 @@ import org.springframework.core.convert.converter.Converter;
 public class PacketTypeConverter implements Converter<String, PacketType> {
     @Override
     public PacketType convert(String value) {
-        System.out.println("in PacketTypeConverter");
+        System.out.println("in PacketTypeConverter value = " + value);
         return PacketType.getEnum(Integer.parseInt(value));
     }
 }
