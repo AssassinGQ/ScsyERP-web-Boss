@@ -61,8 +61,8 @@ public class EscortController extends LoginableBaseController<Escort> {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)//删除信息
     @ResponseBody
-    public JSONObject delete(Long entityId){
-        return super.deleteImpl(entityId);
+    public JSONObject delete(Long userId){
+        return super.deleteImpl(userId);
     }
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)//查询信息

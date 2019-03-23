@@ -55,8 +55,8 @@ public class CorporationController extends LoginableBaseController<Corporation> 
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)//删除信息
     @ResponseBody
-    public JSONObject delete(Long entityId){
-        return super.deleteImpl(entityId);
+    public JSONObject delete(Long userId){
+        return super.deleteImpl(userId);
     }
 
     //TODO 这个不应该写在这里 应该写入Biz,这还需要定义新的联合bean
