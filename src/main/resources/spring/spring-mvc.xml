@@ -64,6 +64,7 @@
                 <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.InStorageFormStatusConverter" />
                 <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.OutStorageFormStatusConverter" />
                 <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.TimeStampConverter" />
+                <bean class="cn.AssassinG.ScsyERP.WebBoss.converters.OilCardTypeConverter" />
             </list>
         </property>
     </bean>
