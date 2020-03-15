@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 public class HttpUtils {
 
-    private static String url_remote = "http://120.76.219.196:8082/ScsyERP";
+    private static String url_remote = "http://47.111.122.217:8082/ScsyERP";
     private static String url_local = "http://127.0.0.1:8095/boss";
     private static String URL = url_remote;
 
